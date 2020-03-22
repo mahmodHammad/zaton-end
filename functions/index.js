@@ -22,3 +22,33 @@ exports.getVideos = functions.https.onRequest((req, res) => {
     })
     .catch(err => console.log(err));
 });
+
+exports.postVideos = functions.https.onRequest((req, res) => {
+  const newVideo = {
+    title: "Signal Analysis",
+    value: [
+      {
+        name: "sections",
+        id: "EmyArAqDEbs",
+        goto: [
+          {
+            value: "80",
+            label: "part1"
+          },
+          {
+            value: "200",
+            label: "part2"
+          }
+        ],
+        name: "section1"
+      }
+    ]
+  };
+
+  admin.firestore().collection('videos').add(newVideo).then(doc=>{
+      res.json({message:"Document Created successfully"})
+  }).catch(err=>{
+      res.status(500).json({error:"EEEEEEEEEEEEEEEEEror"});
+      console.error(err)
+  })
+});
