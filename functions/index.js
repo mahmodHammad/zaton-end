@@ -45,7 +45,12 @@ exports.postVideos = functions.https.onRequest((req, res) => {
     ]
   };
 
-  admin.firestore().collection('videos').add(newVideo).then(doc=>{
+  const newAddedVideo ={
+    title:req.body.title,
+    value:req.body.value
+  }
+
+  admin.firestore().collection('videos').add(newAddedVideo).then(doc=>{
       res.json({message:"Document Created successfully"})
   }).catch(err=>{
       res.status(500).json({error:"EEEEEEEEEEEEEEEEEror"});
