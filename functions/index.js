@@ -1,14 +1,12 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  response.send("Hello Worked fucken world!");
-});
 
-exports.getVideos = functions.https.onRequest((req, res) => {
+const express = require('express')
+const app =express()
+
+
+app.get('/videos' , (req, res) => {
   admin
     .firestore()
     .collection("videos")
@@ -23,7 +21,8 @@ exports.getVideos = functions.https.onRequest((req, res) => {
     .catch(err => console.log(err));
 });
 
-exports.postVideos = functions.https.onRequest((req, res) => {
+
+app.post('/videos',(req, res) => {
   const newVideo = {
     title: "Signal Analysis",
     value: [
@@ -57,3 +56,7 @@ exports.postVideos = functions.https.onRequest((req, res) => {
       console.error(err)
   })
 });
+
+
+
+exports.api = functions.https.onRequest(app)
