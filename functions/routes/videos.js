@@ -1,5 +1,18 @@
 const { db } = require("../util/admin");
 
+exports.getOneVideos = (req, res) => {
+  const document = req.body.docId;
+  const docRef = db.collection("videos").doc(document);
+  docRef
+    .get()
+    .then(data => {
+    //if exist -> return it - else return empty object
+      let videos = data.data()
+      return res.json(videos);
+    })
+    .catch(err => console.log(err));
+};
+
 exports.getAllVideos = (req, res) => {
   db.collection("videos")
     .get()
@@ -35,13 +48,13 @@ exports.postOneVideo = (req, res) => {
     ]
   };
 
-  const newAddedVideo = {
-    title: req.body.title,
-    value: req.body.value
-  };
+  // const newAddedVideo = {
+  //   title: req.body.title,
+  //   value: req.body.value
+  // };
 
   db.collection("videos")
-    .add(newAddedVideo)
+    .add(newVideo)
     .then(doc => {
       res.json({ message: "Document Created successfully" });
     })

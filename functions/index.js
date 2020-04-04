@@ -3,13 +3,13 @@ const functions = require("firebase-functions");
 const express = require("express");
 const app = express();
 
-const { getAllVideos, postOneVideo } = require("./routes/videos");
-const {getOneVideos} = require("./routes/video")
+const { getAllVideos, postOneVideo ,getOneVideos} = require("./routes/videos");
+const { getOneSubject, getAllSubject ,postOneSubject} = require("./routes/subjects");
 // const { FBauth } = require("./middlewares/FBauth");
 
 // Videos Route
-app.get("/videos", getAllVideos);
-app.post("/videos", postOneVideo);
+app.get("/subjects", getAllSubject);
+app.post("/subjects", postOneSubject);
 
 app.get("/video", getOneVideos);
 
