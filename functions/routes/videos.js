@@ -26,22 +26,7 @@ exports.postOnePlaylist = (req, res) => {
 
   let vid = {};
   // cool trick for better structure
-  vid[subject.playListName] = [
-    {
-      title: "Helo lectures1",
-      id: "I'am updated",
-      goto: [
-        {
-          value: "180",
-          label: "part1"
-        },
-        {
-          value: "200",
-          label: "part2"
-        }
-      ]
-    }
-  ];
+  vid[subject.playListName] = subject.videos
 
   db.collection("subjects")
     .doc(subject.subject)
