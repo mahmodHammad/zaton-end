@@ -11,6 +11,7 @@ const { getOneSubject, getAllSubject ,postOneSubject} = require("./routes/subjec
 app.get("/subjects", getAllSubject);
 app.post("/subjects", postOneSubject);
 
-app.get("/video", getOneVideos);
+app.get("/videos", getAllVideos);
+app.post("/videos", postOneVideo);
 
 exports.api = functions.https.onRequest(app);
