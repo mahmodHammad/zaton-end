@@ -1,82 +1,57 @@
 const { db } = require("../util/admin");
 
-exports.getOneVideos = (req, res) => {
-  const document = req.body.docId;
-  const docRef = db.collection("subjects").doc(document);
-  docRef
-    .get()
-    .then(data => {
-      //if exist -> return it - else return empty object
-      let videos = data.data();
-      return res.json(videos);
-    })
-    .catch(err => console.log(err));
-};
-
-exports.getAllVideos = (req, res) => {
-  const subject={
-    id:req.body.id
-  }
-  db.collection("subjects")
-  .doc(subject.id)
-  .collection("videos")
-  .doc("videos").get().then(e=>{
-    console.log(e)
-    console.log(e.data())
-    res.json(e.data())
-  }).catch(err=>{
-    console.log(err)
-  })
-  // db.collection("subjects")
-  //   .get()
-  //   .then(data => {
-  //     let videos = [];
-  //     data.forEach(doc => {
-  //       videos.push(doc.data());
-  //     });
-  //     return res.json(videos);
-  //   })
-  //   .catch(err => console.log(err));
-};
-
-exports.postOneVideo = (req, res) => {
+exports.getAllPlaylists = (req, res) => {
   const subject = {
-    id: req.body.id
+    subject: req.body.subject
   };
-
-  const vid = {
-    playlists: [
-      {
-        title: "lectures",
-        videos: [
-          {
-            title: "section1",
-            id: "1111111111",
-            goto: [
-              {
-                value: "80",
-                label: "part1"
-              },
-              {
-                value: "200",
-                label: "part2"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  };
-  
   db.collection("subjects")
-    .doc(subject.id)
+    .doc(subject.subject)
     .collection("videos")
     .doc("videos")
-    .set(vid)
+    .get()
     .then(e => {
-      console.log(e);
-      res.json("writeed sucessfully");
-    }).catch(err=>{
-      console.error(err)
+      res.json(e.data());
     })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+exports.postOnePlaylist = (req, res) => {
+  const subject = {
+    subject: req.body.subject,
+    playListName: req.body.playListName,
+    videos:req.body.videos
+  };
+
+  let vid = {};
+  // cool trick for better structure
+  vid[subject.playListName] = [
+    {
+      title: "Helo lectures1",
+      id: "I'am updated",
+      goto: [
+        {
+          value: "180",
+          label: "part1"
+        },
+        {
+          value: "200",
+          label: "part2"
+        }
+      ]
+    }
+  ];
+
+  db.collection("subjects")
+    .doc(subject.subject)
+    .collection("videos")
+    .doc("videos")
+    .set(vid, { merge: true })
+    .then(e => {
+      res.json("writeed sucessfully");
+    })
+    .catch(err => {
+      console.error(err);
+    });
 };
