@@ -2,7 +2,7 @@ const { db } = require("../util/admin");
 
 exports.getAllPlaylists = (req, res) => {
   const subject = {
-    subject: req.body.subject
+    subject: req.params.subject
   };
   db.collection("subjects")
     .doc(subject.subject)
@@ -17,16 +17,30 @@ exports.getAllPlaylists = (req, res) => {
     });
 };
 
+/**
+ * subject -> id
+ * playListName -> "string"
+ * videos ->[{title , value(id) ,goto{}}]
+ */
 exports.postOnePlaylist = (req, res) => {
   const subject = {
     subject: req.body.subject,
     playListName: req.body.playListName,
-    videos:req.body.videos
+    videos: req.body.videos
   };
 
   let vid = {};
   // cool trick for better structure
-  vid[subject.playListName] = subject.videos
+
+  if (subject.playListName === 10) {
+    // 10 as identifier for update all the playlist
+    //videos will be object of arrays
+    vid = subject.videos;
+  } else {
+    // we will update only one playlist
+    // videos will be an array
+    vid[subject.playListName] = subject.videos;
+  }
 
   db.collection("subjects")
     .doc(subject.subject)
