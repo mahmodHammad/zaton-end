@@ -29,26 +29,13 @@ exports.postOnePlaylist = (req, res) => {
     videos: req.body.videos
   };
 
-  let vid = {};
-  // cool trick for better structure
-
-  if (subject.playListName === 10) {
-    // 10 as identifier for update all the playlist
-    //videos will be object of arrays
-    vid = subject.videos;
-  } else {
-    // we will update only one playlist
-    // videos will be an array
-    vid[subject.playListName] = subject.videos;
-  }
-
   db.collection("subjects")
     .doc(subject.subject)
     .collection("videos")
     .doc("videos")
-    .set(vid, { merge: true })
+    .set(subject.videos, { merge: true })
     .then(e => {
-      res.json("writeed sucessfully");
+      res.json(subject.videos);
     })
     .catch(err => {
       console.error(err);
