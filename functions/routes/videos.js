@@ -14,6 +14,7 @@ exports.getAllPlaylists = (req, res) => {
     })
     .catch(err => {
       console.log(err);
+      res.json(err)
     });
 };
 
@@ -39,5 +40,6 @@ exports.postOnePlaylist = (req, res) => {
     })
     .catch(err => {
       console.error(err);
+      res.json(err)
     });
 };
