@@ -34,9 +34,10 @@ exports.getSubject = (req, res) => {
     .then(e => {
       let pls = e.data();
       let allpls = Object.keys(pls);
-      let modifiedpl = allpls.map(plName => {
+      let result={}
+      let modifiedpl = allpls.forEach(plName => {
         // loop over each playlist
-        return pls[plName].map(video => {
+        let modifiedPL = pls[plName].map(video => {
           // loop over each video
 
           let oldgoto = video.goto;
@@ -52,9 +53,11 @@ exports.getSubject = (req, res) => {
           });
           return { name, url, goto };
         });
+
+        result[plName]=modifiedPL
       });
       console.log("modifiedpl", modifiedpl);
-      res.json(modifiedpl);
+      res.json(result);
     })
     .catch(err => {
       console.log(err);
