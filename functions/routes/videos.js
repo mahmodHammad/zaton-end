@@ -1,3 +1,4 @@
+// for Contributers
 const { db } = require("../util/admin");
 
 exports.getAllPlaylists = (req, res) => {
